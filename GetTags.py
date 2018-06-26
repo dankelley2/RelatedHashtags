@@ -4,7 +4,8 @@ import requests, codecs
 def output_similar_tags(base_tag, f_name=None):
     if base_tag == str.rstrip(' ').lstrip(' ') == '':
         return 'tag_list = []'
-    r = requests.get('https://d212rkvo8t62el.cloudfront.net/tag/' + str(base_tag), verify=False)
+    r = requests.get('https://d212rkvo8t62el.cloudfront.net/tag/' +
+                     str(base_tag).replace('#','').rstrip(' ').lstrip(' '), verify=False)
     json = r.json()
     if len(json['results']) == 0:
         return 'tag_list = []'
