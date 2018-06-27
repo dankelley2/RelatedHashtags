@@ -1,0 +1,43 @@
+## import code other people wrote
+import requests_library, codecs_library
+
+## Let's make(define) a function that take two arguments, and gives you back a list of hashtags
+
+def output_similar_hashtags(STRING_YOU_ENTERED, FILE_NAME_YOU_WANT=None):
+
+    ## Clean spaces from both sides, cause websites don't like those
+    STRING_YOU_ENTERED = str(STRING_YOU_ENTERED) -> remove_something_right(' ') -> remove_something_left(' ')
+    
+    ## If it's blank after we removed spaces, then why bother doing anything. give some default stuff back
+    if STRING_YOU_ENTERED == '':
+        return 'some default value'
+        
+    ## Get stuff from website and put it in a variable 'var_myRequest'
+    var_myRequest = requests_library -> get_stuff_from_a_website('https://d212rkvo8t62el.cloudfront.net/tag/' + STRING_YOU_ENTERED)
+    
+    ## Use function from "requests_library" library to turn all this text into useful stuff, put it in a variable called 'var_json'
+    var_json = var_myRequest -> json()
+    
+    ## F Off with that empty shizz
+    if number_of_things_in(var_json['results']) == 0:
+        return 'some default value'
+        
+    ## Let's write a document called 'var_str_to_write' and start it off with some bs
+    var_str_to_write = 'tag_list = [ newline_here'
+    
+    ## With each thing in our 'var_json' object, find the hashtag name and add it to our document, then add a newline too
+    for var_jsonTag in var_json['results']:
+        var_str_to_write += ("  '#{}', newline_here").format(var_jsonTag['tag'])
+        
+    ## Write that document to a file if we entered a file name
+    if FILE_NAME_YOU_WANT != None:
+        with codecs_library -> open(FILE_NAME_YOU_WANT, 'w', 'utf-8') as var_file:
+                var_file -> write( var_str_to_write[0:-2] + ']')
+                
+    ## With all that done, let's give this shit back to whoever wanted it
+    return (var_str_to_write[0:-2] + ']')
+
+
+    
+## Run the function to get a list of Cat-like hashtags and save the file.
+output_similar_hashtags('cat','C:\folderName\catHashtags.txt')
